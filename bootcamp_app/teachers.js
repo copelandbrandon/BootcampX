@@ -12,10 +12,9 @@ FROM assistance_requests
 INNER JOIN students ON students.id = assistance_requests.student_id
 INNER JOIN cohorts ON cohorts.id = students.cohort_id
 INNER JOIN teachers ON teachers.id = assistance_requests.teacher_id
-WHERE cohorts.name LIKE '%${process.argv[2]}%'
-ORDER BY teachers.name;`)
+WHERE cohorts.name LIKE $1
+ORDER BY teachers.name;`, [`%${process.argv[2]}%`])
 .then(res => {
-  console.log(res.rows);
   res.rows.forEach(teacher => {
     console.log(`${teacher.cohort}: ${teacher.teacher}`);
   })
